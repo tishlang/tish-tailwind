@@ -1,0 +1,42 @@
+import { readFile } from "fs"
+
+fn isFileError(v) {
+  if (v === null) { return true }
+  if (typeof v === "object" && "error" in v) { return true }
+  return false
+}
+
+async fn tryRead(p) {
+  try {
+    let r = await readFile(p)
+    if (isFileError(r)) { return null }
+    return r
+  } catch (e) { return null }
+}
+
+// `path` semantics:
+//   null      → search the default candidate locations and use the first one
+//                that exists.
+//   ""        → opt out of preflight entirely (no reset CSS is emitted).
+//   "<path>"  → read that file; if it exists, use it; if it doesn't, fall
+//                back to the default candidate search.
+export async fn getPreflight(path) {
+  if (path === "") { return "" }
+  if (path !== null) {
+    let r = await tryRead(path)
+    if (r !== null) { return r }
+  }
+  let candidates = [
+    "node_modules/tish-tailwind/src/preflight.css",
+    "../tish-tailwind/src/preflight.css",
+    "tish-tailwind/src/preflight.css",
+    "../tish/tish-tailwind/src/preflight.css"
+  ]
+  let i = 0
+  while (i < candidates.length) {
+    let r = await tryRead(candidates[i])
+    if (r !== null) { return r }
+    i = i + 1
+  }
+  return ""
+}

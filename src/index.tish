@@ -1,0 +1,18 @@
+// tish-tailwind — public API.
+//
+// Tailwind-style utility CSS, written in pure Tish. Zero JS dependencies.
+// Drop-in replacement for the official Tailwind CLI for tish-* projects.
+
+import { tw as _tw } from "./tw.tish"
+import { getUtilities as _getUtilities } from "./utilities.tish"
+import { getPreflight as _getPreflight } from "./preflight.tish"
+import {
+  fullStylesheet as _fullStylesheet,
+  emitStylesheet as _emitStylesheet
+} from "./emit.tish"
+
+export const tw = _tw
+export const getUtilities = _getUtilities
+export const getPreflight = _getPreflight
+export const fullStylesheet = _fullStylesheet
+export const emitStylesheet = _emitStylesheet

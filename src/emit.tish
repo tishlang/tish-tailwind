@@ -1,0 +1,98 @@
+// Pure-Tish CSS emitter. Scans a list of source files, picks the Tailwind
+// utility classes that appear in them, emits a stylesheet.
+//
+// No external CSS tooling.
+//
+// Usage:
+//   import { emitStylesheet } from "tish-tailwind"
+//
+//   await emitStylesheet({
+//     sourceFiles: ["app/main.tish", "content/page.tishdoc.md"],
+//     outputPath:  "public/learn.css"
+//   })
+
+import { writeFile, readFile } from "fs"
+import { getPreflight } from "./preflight.tish"
+import { getUtilities } from "./utilities.tish"
+
+fn opt(opts, key, fallback) {
+  if (key in opts) {
+    let v = opts[key]
+    if (v !== null) { return v }
+  }
+  return fallback
+}
+
+fn isFileError(v) {
+  if (v === null) { return true }
+  if (typeof v === "object" && "error" in v) { return true }
+  return false
+}
+
+async fn readAllSources(paths) {
+  let content = ""
+  let i = 0
+  while (i < paths.length) {
+    try {
+      let body = await readFile(paths[i])
+      if (!isFileError(body) && typeof body === "string") {
+        content = content + "\n" + body
+      }
+    } catch (e) { }
+    i = i + 1
+  }
+  return content
+}
+
+fn pickUsedUtilities(content, utils) {
+  let used = []
+  let i = 0
+  while (i < utils.length) {
+    let u = utils[i]
+    if (content.indexOf(u.cls) !== -1) {
+      used.push(u.css)
+    }
+    i = i + 1
+  }
+  return used
+}
+
+export async fn fullStylesheet(opts) {
+  let sourceFiles = opt(opts, "sourceFiles", [])
+  let preflightPath = opt(opts, "preflightPath", null)
+  let extraCss = opt(opts, "extraCss", "")
+  let alwaysInclude = opt(opts, "alwaysInclude", [])
+
+  let content = await readAllSources(sourceFiles)
+  let i = 0
+  while (i < alwaysInclude.length) {
+    content = content + "\n" + alwaysInclude[i]
+    i = i + 1
+  }
+
+  let preflight = await getPreflight(preflightPath)
+  let utils = getUtilities()
+  let used = pickUsedUtilities(content, utils)
+
+  let css = ""
+  if (preflight !== null && preflight !== "") {
+    css = css + preflight + "\n"
+  }
+  css = css + used.join("\n") + "\n"
+  if (extraCss !== "") {
+    css = css + "\n" + extraCss + "\n"
+  }
+  let result = {}
+  result.css = css
+  result.includedCount = used.length
+  return result
+}
+
+export async fn emitStylesheet(opts) {
+  let result = await fullStylesheet(opts)
+  let outPath = opts.outputPath
+  await writeFile(outPath, result.css)
+  let total = getUtilities().length
+  console.log("tish-tailwind: emitted " + outPath + " (" + String(result.includedCount) + "/" + String(total) + " utilities used)")
+  return result
+}

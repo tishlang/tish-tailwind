@@ -1,0 +1,22 @@
+{
+  "name": "tish-tailwind",
+  "version": "0.1.0",
+  "description": "Tailwind-style utility CSS in pure Tish. Zero JS dependencies. Drop-in for the npm tailwindcss CLI.",
+  "license": "PIF",
+  "private": false,
+  "tish": {
+    "module": "./src/index.tish"
+  },
+  "main": "./src/index.tish",
+  "exports": {
+    ".": {
+      "tish": "./src/index.tish",
+      "default": "./src/index.tish"
+    },
+    "./preflight.css": "./src/preflight.css"
+  },
+  "files": [
+    "src/",
+    "README.md"
+  ]
+}
