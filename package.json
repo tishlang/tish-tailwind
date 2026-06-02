@@ -1,22 +1,51 @@
 {
-  "name": "tish-tailwind",
+  "name": "@tishlang/tish-tailwind",
   "version": "0.1.0",
   "description": "Tailwind-style utility CSS in pure Tish. Zero JS dependencies. Drop-in for the npm tailwindcss CLI.",
   "license": "PIF",
   "private": false,
+  "homepage": "https://github.com/tishlang/tish-tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/tishlang/tish-tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tishlang/tish-tailwind.git"
+  },
   "tish": {
     "module": "./src/index.tish"
   },
-  "main": "./src/index.tish",
+  "main": "./dist/index.js",
   "exports": {
     ".": {
       "tish": "./src/index.tish",
-      "default": "./src/index.tish"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./preflight.css": "./src/preflight.css"
   },
   "files": [
     "src/",
+    "dist/",
     "README.md"
-  ]
+  ],
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "semantic-release": "^25.0.3",
+    "@tishlang/tish": "^1.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests yet\""
+  }
 }

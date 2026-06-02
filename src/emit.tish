@@ -4,7 +4,7 @@
 // No external CSS tooling.
 //
 // Usage:
-//   import { emitStylesheet } from "tish-tailwind"
+//   import { emitStylesheet } from "@tishlang/tish-tailwind"
 //
 //   await emitStylesheet({
 //     sourceFiles: ["app/main.tish", "content/page.tishdoc.md"],

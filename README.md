@@ -18,7 +18,7 @@ Used by [`tish-audio`](https://github.com/tishlang/tish-audio), [`tish-learn`](h
 ```json
 {
   "dependencies": {
-    "tish-tailwind": "../tish-tailwind"
+    "@tishlang/tish-tailwind": "latest"
   }
 }
 ```
@@ -86,3 +86,7 @@ The tradeoff: this package ships a **curated subset** of Tailwind. If you need a
 ## Inspiration
 
 Originally written for [`tish-audio`](https://github.com/tishlang/tish-audio); extracted into a shared package so other Tish projects can drop the npm `tailwindcss` dependency.
+
+## License
+
+[PIF](LICENSE)
