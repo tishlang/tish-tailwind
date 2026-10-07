@@ -2,7 +2,7 @@
   "name": "@tishlang/tish-tailwind",
   "version": "0.1.0",
   "description": "Tailwind-style utility CSS in pure Tish. Zero JS dependencies. Drop-in for the npm tailwindcss CLI.",
-  "license": "PIF",
+  "license": "MIT",
   "private": false,
   "homepage": "https://github.com/tishlang/tish-tailwind#readme",
   "bugs": {
