@@ -89,4 +89,4 @@ Originally written for [`tish-audio`](https://github.com/tishlang/tish-audio); e
 
 ## License
 
-[PIF](LICENSE)
+[MIT](LICENSE)
